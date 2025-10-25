@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Demo - Translation Viewer</title>
+<style>
+    /* Reset & base */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; font-family: "Segoe UI", Roboto, sans-serif; background: #333; display:flex; justify-content:center; align-items:center; }
+    
+    /* iPhone frame */
+    .iphone-frame {
+        position: relative;
+        width: 390px;
+        height: 844px;
+        border-radius: 50px;
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        border: 6px solid #000;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content:flex-start;
+        align-items:center;
+    }
+
+    /* Fake address bar at bottom */
+    .address-bar {
+        width: 90%;
+        height: 30px;
+        margin-bottom: 12px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 12px;
+        text-align:center;
+        line-height:30px;
+        font-size:14px;
+        color:#fff;
+        overflow:hidden;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+        font-weight:500;
+    }
+
+    /* Notch */
+    .notch {
+        position: absolute;
+        top:0;
+        width: 210px;
+        height: 30px;
+        background:#111;
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius:16px;
+        z-index:2;
+    }
+
+    /* Centered text area */
+    .center-wrapper {
+        flex:1;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        width:100%;
+        padding: 0 20px;
+        text-align:center;
+        color:#fff;
+        font-weight:600;
+        font-size: clamp(1.5rem, 4vw, 2.25rem);
+        line-height:1.4;
+        position:relative;
+    }
+
+    #live-text {
+        transition: opacity 0.6s ease, transform 0.6s ease;
+        display:inline-block;
+    }
+    #live-text.fade { opacity:0; transform: translateY(12px); }
+    #live-text.show { opacity:1; transform: translateY(0); }
+
+    /* Animated background glow */
+    .iphone-frame::before {
+        content:"";
+        position:absolute;
+        inset:-20%;
+        width:140%;
+        height:140%;
+        background: radial-gradient(circle at center, rgba(255,255,255,0.05), transparent 70%);
+        animation:pulse 8s infinite alternate;
+        z-index:0;
+        pointer-events:none;
+    }
+    @keyframes pulse {
+        from { transform: scale(1) rotate(0deg); opacity:0.5; }
+        to { transform: scale(1.08) rotate(10deg); opacity:0.8; }
+    }
+</style>
+</head>
+<body>
+<div class="iphone-frame">
+    <div class="notch"></div>
+    <div class="center-wrapper">
+        <div id="live-text">For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life.</div>
+    </div>
+    <div class="address-bar">https://onewordmanytongues.com/yourchurchlive</div>
+</div>
+
+<script>
+const texts = [
+    "For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life.",
+    "Kwa Mungu aliupenda ulimwengu, kiasi kwamba akamtoa Mwanawe pekee, ili kila amwamini asipotee bali awe na uzima wa milele.",
+    "神爱世人，甚至赐下他的独生子，使一切信他的，不至灭亡，反得永生。",
+    "Porque de tal manera amó Dios al mundo, que dio a su Hijo unigénito, para que todo aquel que cree en él no se pierda, sino que tenga vida eterna.",
+    "Car Dieu a tant aimé le monde qu'il a donné son Fils unique, afin que quiconque croit en lui ne périsse point, mais ait la vie éternelle.",
+    "Denn also hat Gott die Welt geliebt, dass er seinen eingeborenen Sohn gab, damit alle, die an ihn glauben, nicht verloren gehen, sondern ewiges Leben haben.",
+    "Perché Dio ha tanto amato il mondo che ha dato il suo Figlio unigenito, affinché chiunque crede in lui non perisca, ma abbia vita eterna.",
+    "Ибо так возлюбил Бог мир, что отдал Сына Своего Единородного, чтобы всякий верующий в Него не погиб, но имел жизнь вечную.",
+    "神はそのひとり子をお与えになったほどに、世を愛された。それは御子を信じる者が一人として滅びず、永遠の命を持つためである。",
+    "لأن الله أحب العالم حتى بذل ابنه الوحيد، لكي لا يهلك كل من يؤمن به، بل تكون له الحياة الأبدية."
+];
+
+let index = 1;
+const liveText = document.getElementById("live-text");
+
+function showNext() {
+    liveText.classList.remove('show');
+    liveText.classList.add('fade');
+    setTimeout(() => {
+        liveText.textContent = texts[index];
+        liveText.classList.remove('fade');
+        liveText.classList.add('show');
+        index = (index + 1) % texts.length;
+    }, 600);
+}
+
+setInterval(showNext, 3000);
+</script>
+</body>
+</html>
